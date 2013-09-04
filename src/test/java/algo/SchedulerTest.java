@@ -20,39 +20,42 @@ public class SchedulerTest
      * @param testName name of the test case
      */
 
-    public void testProblemOne() throws IOException
+    public void testProblems() throws IOException
     {
-    	Scheduler sched = initScheduler();
+    	Scheduler sched = initScheduler("jobs.txt");
     	
     	sched.scheduleOne();
     	
     	long cost = sched.computeCost();
     	
-    	System.out.println("Problem 1 = "+cost);
+    	System.out.println("HW1 - Problem 1 = "+cost);
     	
-        assertTrue( true );
+    	assertEquals(69119377652L, cost);
                 
-    }
-
-    public void testProblemTwo() throws IOException
-    {
-    	Scheduler sched = initScheduler();
-    	
     	sched.scheduleTwo();
     	
-    	long cost = sched.computeCost();
+    	cost = sched.computeCost();
     	
-    	System.out.println("Problem 2 = "+cost);
+    	System.out.println("HW1 - Problem 2 = "+cost);
     	
-        assertTrue( true );
-                
+    	assertEquals(67311454237L, cost);
     }
 
-	private Scheduler initScheduler() throws IOException {
+    public void testEx4() throws IOException
+    {
+    	
+    	Scheduler sched = initScheduler("jobs2.txt");
+    	sched.scheduleOne();
+    	assertEquals(7226993, sched.computeCost());
+    	sched.scheduleTwo();	
+    	assertEquals(7078040, sched.computeCost());    
+    }
+
+	private Scheduler initScheduler(String filename) throws IOException {
 		Scheduler sched = new Scheduler();
     	
-    	List<String> lines = Files.readLines(new File("jobs.txt"), Charset.forName("UTF-8"));
-    	assertEquals(10001, lines.size());
+    	List<String> lines = Files.readLines(new File(filename), Charset.forName("UTF-8"));
+
     	for(String line : lines.subList(1, lines.size())) {
     		String []fields = line.split(" ");
     		assertEquals(2, fields.length);
@@ -65,22 +68,60 @@ public class SchedulerTest
 		return sched;
 	}
     
-    public void testOne() {
+    public void testEx1() {
     	
     	Scheduler sched = new Scheduler();
     	sched.addJob(3, 5);
     	sched.addJob(1, 2);    	
     	sched.scheduleOne();
-    	long cost = sched.computeCost();
-    	assertEquals(23, cost);
+
+    	assertEquals(23, sched.computeCost());
+     	sched.scheduleTwo();
+    	assertEquals(22, sched.computeCost());
     }
-    public void testTwo() {
+    
+    
+    public void testEx2() {
     	
     	Scheduler sched = new Scheduler();
-    	sched.addJob(3, 5);
-    	sched.addJob(1, 2);    	
-    	sched.scheduleTwo();
-    	long cost = sched.computeCost();
-    	assertEquals(22, cost);
+  
+    	sched.addJob(20, 50);
+    	sched.addJob(4, 79);
+    	sched.addJob(9, 80);
+    	sched.addJob(77, 58);
+    	sched.addJob(46, 2);
+    	sched.addJob(31, 92);
+    	sched.addJob(55, 8);
+    	sched.addJob(13, 12);
+    	sched.addJob(61, 92);
+    	sched.addJob(38, 5);
+
+    	sched.scheduleOne();
+    	assertEquals(40135, sched.computeCost());
+     	sched.scheduleTwo();
+    	assertEquals(38638, sched.computeCost());
     }
+    
+    public void testEx3() {
+    	
+    	Scheduler sched = new Scheduler();
+
+    	sched.addJob(77, 7);
+    	sched.addJob(74, 40);
+    	sched.addJob(3, 19);
+    	sched.addJob(99, 39);
+    	sched.addJob(30, 58);
+    	sched.addJob(89, 86);
+    	sched.addJob(76, 43);
+    	sched.addJob(47, 3);
+    	sched.addJob(23, 14);
+    	sched.addJob(54, 94);
+    	
+    	sched.scheduleOne();
+    	assertEquals(79805, sched.computeCost());
+     	sched.scheduleTwo();
+    	assertEquals(76719, sched.computeCost());
+    }
+
+
   }

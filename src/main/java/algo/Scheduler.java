@@ -42,7 +42,7 @@ public class Scheduler
 				if (d1 != d2) {
 					return d1 - d2;
 				}
-				return j1.weigth - j2.length;
+				return j1.weigth - j2.weigth;
 			}
 			
 		});
@@ -79,7 +79,7 @@ public class Scheduler
 		long  completion = 0;
 		for(Job job : jobs) {
 			completion += job.length;
-			sum += job.weigth * completion;
+			sum += completion * job.weigth;
 		}
 		return sum;
 	}

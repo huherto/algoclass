@@ -1,8 +1,6 @@
 package algo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Graph {
@@ -17,9 +15,8 @@ public class Graph {
 		int cost;
 		
 		public Edge(int startNode, int endNode, int cost) {
-			super();
-			this.startNode = startNode;
-			this.endNode = endNode;
+			this.startNode = Math.min(startNode ,endNode);
+			this.endNode = Math.max(startNode, endNode);
 			this.cost = cost;
 		}
 
@@ -50,6 +47,10 @@ public class Graph {
 				return false;
 			return true;
 		}			
+		
+		public String toString() {
+			return String.format("(%d, %d, %d)", startNode, endNode, cost);
+		}
 	}
 	
 	public void addEdge(int n1, int n2, int cost) {
@@ -67,24 +68,47 @@ public class Graph {
 			
 			Edge e = chooseEdge(mst.nodes);
 			mst.edges.add(e);
+			mst.nodes.add(e.startNode);
 			mst.nodes.add(e.endNode); 			
 		}		
 		return mst;
 	}
+	
+	private boolean crosses(Edge edge, Set<Integer> x) {
+		if (x.contains(edge.startNode)) {
+			if (!x.contains(edge.endNode))
+				return true;				
+		}
+		else {
+			if (x.contains(edge.endNode))
+				return true;								
+		}		
+		return false;
+	}
 
 	private Edge chooseEdge(Set<Integer> x) {
 		
-		for(Edge edge : edges) {			
-			if (x.contains(edge.startNode)) {
-				if (!x.contains(edge.endNode))
-					return edge;				
+		Edge minEdge = null;
+		for(Edge edge : edges) {		
+			if (crosses(edge, x)) {
+				if (minEdge == null) {
+					minEdge = edge;
+				}
+				else {
+					if (edge.cost < minEdge.cost)
+						minEdge = edge;
+				}
 			}
-			else {
-				if (x.contains(edge.endNode))
-					return edge;								
-			}			
 		}		
-		throw new RuntimeException("logic error");
+		return minEdge;
+	}
+
+	public long sumCost() {
+		long sum = 0;
+		for(Edge edge : edges) {	
+			sum += edge.cost;
+		}
+		return sum;
 	}
 
 }

@@ -23,6 +23,7 @@ public class MstTest extends TestCase {
 		int edges = Integer.parseInt(fields[1]);
 		assertEquals(500, nodes);
 		assertEquals(2184, edges);
+		Graph g = new Graph();
 		for (String line : lines.subList(1, lines.size())) {
 			fields = line.split(" ");
 			assertEquals(3, fields.length);
@@ -30,8 +31,25 @@ public class MstTest extends TestCase {
 			int v1 = Integer.parseInt(fields[0]);
 			int v2 = Integer.parseInt(fields[1]);
 			int cost = Integer.parseInt(fields[2]);
+			g.addEdge(v1, v2, cost);
 
 		}
+		
+		
+		Graph mst = g.minimumSpanningTree();
+		System.out.println("HW1 - Problem 3 "+mst.sumCost());
+	}
+	
+	public void testSmallExample() {
+		
+		Graph g = new Graph();
+		g.addEdge(1, 2, 1);
+		g.addEdge(1, 4, 3);
+		g.addEdge(1, 3, 4);
+		g.addEdge(2, 4, 2);
+		g.addEdge(3, 4, 5);
+		Graph mst = g.minimumSpanningTree();
+		assertEquals(7, mst.sumCost());	
 	}
 
 }
